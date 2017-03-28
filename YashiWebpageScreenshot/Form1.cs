@@ -12,12 +12,13 @@ namespace YashiWebpageScreenshot
         WebKitBrowser webKitBrowser = null;
         WebBrowser ieBrowser = null;
         string purl = "https://github.com/cxchope/YashiWebpageScreenshot";
-        string pout = "1.png";
-        int ptime = 5;
+        string pout = "WebpageScreenshot.png";
+        int ptime = 1;
         int ntime = 0;
         int pwidth = 1024;
         int pheight = 768;
         bool usewebkit = true;
+        int scrollto = 0;
 
         public Form1()
         {
@@ -81,6 +82,10 @@ namespace YashiWebpageScreenshot
                 {
                     this.usewebkit = false;
                 }
+                else if (nowkey == "/p")
+                {
+                    this.scrollto = Convert.ToInt32(nowval);
+                }
             }
             this.startp();
         }
@@ -106,11 +111,21 @@ namespace YashiWebpageScreenshot
                 this.Controls.Add(this.ieBrowser);
                 this.ieBrowser.Navigate(this.purl);
                 this.ieBrowser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(documentCompleted);
+                this.ieBrowser.ScrollBarsEnabled = false;
             }
         }
 
         private void documentCompleted(object sender, EventArgs e)
         {
+            string js = "document.body.scrollTop=" + this.scrollto + ";document.body.style.overflow='hidden';";
+            if (this.usewebkit)
+            {
+                this.webKitBrowser.StringByEvaluatingJavaScriptFromString(js);
+            }
+            else
+            {
+                this.ieBrowser.Document.InvokeScript(js);
+            }
             if (this.timer1.Enabled)
             {
                 return;
