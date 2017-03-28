@@ -1,17 +1,18 @@
-﻿using System.Reflection;
+﻿using System.Resources;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("YashiWebpageScreenshot")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Yashi Webpage Screenshot")]
+[assembly: AssemblyDescription("https://github.com/cxchope/YashiWebpageScreenshot")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("YashiWebpageScreenshot")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("KagurazakaYashi")]
+[assembly: AssemblyProduct("Yashi Webpage Screenshot")]
+[assembly: AssemblyCopyright("Copyright © KagurazakaYashi 2017")]
+[assembly: AssemblyTrademark("uuu.moe")]
 [assembly: AssemblyCulture("")]
 
 // 将 ComVisible 设置为 false 会使此程序集中的类型
@@ -34,3 +35,5 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: NeutralResourcesLanguage("")]
+

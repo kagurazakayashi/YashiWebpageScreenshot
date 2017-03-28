@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WebKit;
 
@@ -16,11 +11,23 @@ namespace YashiWebpageScreenshot
         string[] args = null;
         WebKitBrowser webKitBrowser = null;
         WebBrowser ieBrowser = null;
+        string purl = "https://github.com/cxchope/YashiWebpageScreenshot";
+        string pout = "1.png";
+        int ptime = 5;
+        int ntime = 0;
+        int pwidth = 1024;
+        int pheight = 768;
+        bool usewebkit = true;
 
         public Form1()
         {
             InitializeComponent();
-            Application.Exit();
+            this.Text = "No parameters - " + this.Text;
+            this.webKitBrowser = new WebKitBrowser();
+            this.webKitBrowser.Width = 1024;
+            this.webKitBrowser.Height = 768;
+            this.Controls.Add(this.webKitBrowser);
+            this.webKitBrowser.Navigate(this.purl);
         }
         public Form1(string[] args)
         {
@@ -46,62 +53,105 @@ namespace YashiWebpageScreenshot
                 }
                 nowvk = !nowvk;
             }
-            int pwidth = 1024;
-            int pheight = 768;
-            int ptime = 5;
-            string purl = "http://127.0.0.1";
-            string pout = "1.png";
-            bool usewebkit = true;
             for (int i = 0; i < argskey.Count; i++)
             {
                 string nowkey = argskey[i];
                 string nowval = argsval[i];
                 if (nowkey == "/w")
                 {
-                    pwidth = Convert.ToInt32(nowval);
+                    this.pwidth = Convert.ToInt32(nowval);
                 }
                 else if (nowkey == "/h")
                 {
-                    pheight = Convert.ToInt32(nowval);
+                    this.pheight = Convert.ToInt32(nowval);
                 }
                 else if (nowkey == "/t")
                 {
-                    ptime = Convert.ToInt32(nowval) * 1000;
+                    this.ptime = Convert.ToInt32(nowval);
                 }
                 else if (nowkey == "/u")
                 {
-                    purl = nowval;
+                    this.purl = nowval;
                 }
                 else if (nowkey == "/o")
                 {
-                    pout = nowval;
+                    this.pout = nowval;
                 }
                 else if (nowkey == "/b" && nowval == "ie")
                 {
-                    usewebkit = false;
+                    this.usewebkit = false;
                 }
             }
-            this.startp(usewebkit, pwidth, pheight, ptime, purl, pout);
+            this.startp();
         }
-        private void startp(bool usewebkit, int pwidth, int pheight, int ptime, string purl, string pout)
+
+        private void startp()
         {
-            this.Text = purl;
-            if (usewebkit)
+            this.Text = "[Loading...] " + this.purl;
+            this.ntime = ptime;
+            if (this.usewebkit)
             {
                 this.webKitBrowser = new WebKitBrowser();
-                this.webKitBrowser.Width = pwidth;
-                this.webKitBrowser.Height = pheight;
-                this.Controls.Add(webKitBrowser);
-                this.webKitBrowser.Navigate(purl);
+                this.webKitBrowser.Width = this.pwidth;
+                this.webKitBrowser.Height = this.pheight;
+                this.Controls.Add(this.webKitBrowser);
+                this.webKitBrowser.Navigate(this.purl);
+                this.webKitBrowser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(documentCompleted);
             }
             else
             {
                 this.ieBrowser = new WebBrowser();
-                this.ieBrowser.Width = pwidth;
-                this.ieBrowser.Height = pheight;
-                this.Controls.Add(ieBrowser);
-                this.ieBrowser.Navigate(purl);
+                this.ieBrowser.Width = this.pwidth;
+                this.ieBrowser.Height = this.pheight;
+                this.Controls.Add(this.ieBrowser);
+                this.ieBrowser.Navigate(this.purl);
+                this.ieBrowser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(documentCompleted);
             }
+        }
+
+        private void documentCompleted(object sender, EventArgs e)
+        {
+            if (this.timer1.Enabled)
+            {
+                return;
+            }
+            this.timer1.Enabled = true;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            this.ntime--;
+            this.Text = "[" + this.ntime + "] " + this.purl;
+            if (this.ntime < 0)
+            {
+                this.Text = "[screenshot...] " + this.purl;
+                this.timer1.Enabled = false;
+                this.screenshot();
+            }
+        }
+
+        private void screenshot()
+        {
+            Bitmap bit = new Bitmap(this.pwidth, this.pheight);
+            Graphics g = Graphics.FromImage(bit);
+            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+            if (this.webKitBrowser != null)
+            {
+                g.CopyFromScreen(this.webKitBrowser.PointToScreen(Point.Empty), Point.Empty, this.webKitBrowser.Size);
+            }
+            else if (this.ieBrowser != null)
+            {
+                g.CopyFromScreen(this.ieBrowser.PointToScreen(Point.Empty), Point.Empty, this.ieBrowser.Size);
+            }
+            try
+            {
+                bit.Save(this.pout);
+            }
+            catch
+            {
+                MessageBox.Show("Save failed:\n" + this.pout, "YashiWebpageScreenshot", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            Application.Exit();
         }
     }
 }
