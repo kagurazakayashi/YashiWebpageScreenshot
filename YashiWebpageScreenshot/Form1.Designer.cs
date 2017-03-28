@@ -28,35 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.webKitBrowser1 = new WebKit.WebKitBrowser();
             this.SuspendLayout();
-            // 
-            // webKitBrowser1
-            // 
-            this.webKitBrowser1.BackColor = System.Drawing.Color.White;
-            this.webKitBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webKitBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.webKitBrowser1.Margin = new System.Windows.Forms.Padding(0);
-            this.webKitBrowser1.Name = "webKitBrowser1";
-            this.webKitBrowser1.Size = new System.Drawing.Size(304, 281);
-            this.webKitBrowser1.TabIndex = 0;
-            this.webKitBrowser1.Url = null;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(304, 281);
-            this.Controls.Add(this.webKitBrowser1);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
             this.Text = "YashiWebpageScreenshot";
+            this.TopMost = true;
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private WebKit.WebKitBrowser webKitBrowser1;
     }
 }
 
