@@ -82,15 +82,29 @@ namespace YashiWebpageScreenshot
                 string nowval = argsval[i];
                 if (nowkey == "/w")
                 {
-                    pwidth = Convert.ToInt32(nowval);
+                    if (pwidth > 0)
+                    {
+                        pwidth = Convert.ToInt32(nowval);
+                    }
                 }
                 else if (nowkey == "/h")
                 {
-                    pheight = Convert.ToInt32(nowval);
+                    if (pheight > 0)
+                    {
+                        pheight = Convert.ToInt32(nowval);
+                    }
                 }
                 else if (nowkey == "/t")
                 {
                     ptime = Convert.ToInt32(nowval);
+                    if (ptime == 0)
+                    {
+                        TopMost = true;
+                    }
+                    else if (ptime < 0)
+                    {
+                        ptime = 0;
+                    }
                 }
                 else if (nowkey == "/u")
                 {
@@ -106,7 +120,10 @@ namespace YashiWebpageScreenshot
                 }
                 else if (nowkey == "/p")
                 {
-                    scrollto = Convert.ToInt32(nowval);
+                    if (scrollto > 0)
+                    {
+                        scrollto = Convert.ToInt32(nowval);
+                    }
                 }
                 else if (nowkey == "/e")
                 {
@@ -163,7 +180,11 @@ namespace YashiWebpageScreenshot
         {
             ntime--;
             Text = "[" + ntime + "] " + purl;
-            if (ntime < 0)
+            if (ntime == 0)
+            {
+                TopMost = true;
+            }
+            else if (ntime < 0)
             {
                 Text = "[screenshot...] " + purl;
                 timer1.Enabled = false;

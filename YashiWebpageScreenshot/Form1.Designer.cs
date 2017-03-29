@@ -49,7 +49,6 @@
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.Text = "YashiWebpageScreenshot";
-            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.ResumeLayout(false);
 
